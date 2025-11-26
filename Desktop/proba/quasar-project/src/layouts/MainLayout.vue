@@ -37,9 +37,9 @@ const linksList = [
   },
   {
     title: 'Github',
-    caption: 'github.com/quasarframework',
+    caption: 'repozitorij proba',
     icon: 'code',
-    link: 'https://github.com/quasarframework',
+    link: 'https://github.com/PokosP/proba.git',
   },
   {
     title: 'Discord Chat Channel',
