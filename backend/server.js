@@ -22,8 +22,8 @@ db.connect(err => {
   }
 });
 
-app.get('/auti', (req, res) => {
-  db.query('SELECT * FROM auti', (err, results) => {
+app.get('/automobili', (req, res) => {
+  db.query('SELECT * FROM automobili', (err, results) => {
     if (err) res.status(500).send(err);
     else res.json(results);
   });
