@@ -18,6 +18,13 @@ db.connect(err => {
   else console.log('Povezano s MySQL bazom!');
 });
 
+app.get('/automobili', (req, res) => {
+  db.query('SELECT * FROM automobili', (err, results) => {
+    if (err) res.status(500).send(err);
+    else res.json(results);
+  });
+});
+
 // GET /automobili - svi automobili s lokacijom
 app.get('/automobili', (req, res) => {
     const sql = `
@@ -101,6 +108,69 @@ app.get('/pretraga', (req, res) => {
 
         res.json(results);
     });
+});
+
+app.get('/api/rezervacije/moje', (req, res) => {
+  const userIdHeader = req.headers['x-user-id'];  // case-insensitive
+
+  if (!userIdHeader) {
+    return res.status(401).json({ error: 'Missing X-User-ID header' });
+  }
+
+  const userId = parseInt(userIdHeader);
+
+  if (isNaN(userId)) {
+    return res.status(400).json({ error: 'Invalid user ID format' });
+  }
+
+  db.query(
+    'SELECT rez.id, ' +
+    'aut.naziv, ' +
+    'rez.datum_od, ' +
+    'rez.datum_do, ' +
+    'rez.ukupna_cijena, ' +
+    'rez.status ' +
+    'FROM rezervacije rez left join automobili aut on rez.automobil_id = aut.id ' +
+    'WHERE korisnik_id = ?',
+    [userId],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send(err);
+      } else {
+        res.json(results);
+      }
+    }
+  );
+});
+
+app.patch('/api/rezervacije/:id/otkazi', (req, res) => {
+  const rezervacijaId = parseInt(req.params.id);
+  const userIdHeader = req.headers['x-user-id'];
+
+  if (!userIdHeader || isNaN(parseInt(userIdHeader))) {
+    return res.status(400).json({ error: 'nepostojeći ili nepoznati ID korisnika' });
+  }
+
+  const userId = parseInt(userIdHeader);
+
+  
+  db.query(
+    'UPDATE rezervacije SET status = "Otkazano" WHERE id = ? AND korisnik_id = ?',
+    [rezervacijaId, userId],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Greška u bazi' });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: 'Rezervacija nije pronađena ili nije "Potvrđeno"' });
+      }
+
+      res.json({ success: true, message: 'Rezervacija otkazana' });
+    }
+  );
 });
 
 app.listen(3000, () => console.log('Server radi na portu 3000'));

@@ -44,10 +44,16 @@ const linksList = [
     link: '#/pretraga-vozila',
   },
   {
+    title: 'Moje rezervacije',
+    caption: '',
+    icon: 'person',
+    link: '#/mojerezervacije',
+  },
+  {
     title: 'O nama',
     caption: 'Pitanja i Kontakt',
     icon: 'info',
-    link: '#/o-nama',
+    link: '#/onama',
   },
   {
     title: 'Lokacije naših salona',
@@ -56,8 +62,14 @@ const linksList = [
     link: '#/lokacije',
   },
   {
-    title: 'Prijava / Registracija',
-    caption: '???',
+    title: 'Registracija',
+    caption: '',
+    icon: 'person',
+    link: '#/registracija',
+  },
+  {
+    title: 'Prijava',
+    caption: '',
     icon: 'person',
     link: '#/prijava',
   },

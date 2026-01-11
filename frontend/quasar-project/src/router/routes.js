@@ -15,9 +15,14 @@ const routes = [
     children: [{ path: '', component: () => import('pages/PretrazivanjePage.vue') }],
   },
   {
-    path: '/o-nama',
+    path: '/mojerezervacije',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [{ path: '', component: () => import('pages/MojeRezervacijePage.vue') }],
+  },
+  {
+    path: '/onama',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '', component: () => import('pages/OnamaPage.vue') }],
   },
   {
     path: '/lokacije',
@@ -26,6 +31,11 @@ const routes = [
   },
   {
     path: '/prijava',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+  },
+  {
+    path: '/registracija',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
   },
