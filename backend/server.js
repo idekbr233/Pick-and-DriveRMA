@@ -110,6 +110,172 @@ app.get('/pretraga', (req, res) => {
     });
 });
 
+app.post('/api/Korisnik', (req, res) => {
+  const { ime, prezime, email, korisnicko_ime, lozinka } = req.body;
+
+  // Pitam bazu koji je trenutno najveci ID
+  db.query('SELECT MAX(id) AS maxId FROM korisnici', (err, results) => {
+    if (err) {
+      console.error("Greška pri dohvaćanju ID-a:", err);
+      return res.status(500).json({ error: 'Greška na serveru' });
+    }
+
+    // Izracunava novi ID (ako nema nikoga u bazi, kreni od 1)
+    const noviId = (results[0].maxId || 0) + 1;
+
+    // Radi INSERT i salje je novi ID bazi
+    const sql = `INSERT INTO korisnici (id, ime, prezime, email, korisnicko_ime, lozinka) VALUES (?, ?, ?, ?, ?, ?)`;
+
+    db.query(sql, [noviId, ime, prezime, email, korisnicko_ime, lozinka], (insertErr, result) => {
+      if (insertErr) {
+        console.error("Greška pri upisu u bazu:", insertErr.sqlMessage);
+        return res.status(500).json({ error: 'Baza odbija upis: ' + insertErr.sqlMessage });
+      }
+
+      // Javlja uspjeh
+      res.status(200).json({ 
+        message: 'Korisnik uspješno dodan!', 
+        id: noviId 
+      });
+    });
+  });
+});
+
+
+app.post('/api/prijava', (req, res) => {
+  const { korisnicko_ime, lozinka } = req.body;
+
+  if (!korisnicko_ime || !lozinka) {
+    return res.status(400).json({ error: 'Sva polja su obavezna' });
+  }
+
+  const sql = `SELECT * FROM korisnici WHERE korisnicko_ime = ? AND lozinka = ?`;
+  db.query(sql, [korisnicko_ime, lozinka], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Greška u bazi' });
+    }
+
+    if (results.length > 0) {
+      res.json({ message: 'Prijava uspješna', korisnik: results[0] });
+    } else {
+      res.status(401).json({ error: 'Neispravno korisničko ime ili lozinka' });
+    }
+  });
+});
+
+// Dohvat svih korisnika iz baze
+app.get('/api/korisnici', (req, res) => {
+  const sql = 'SELECT id, ime, prezime, korisnicko_ime, email FROM korisnici';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Greška pri dohvatu:', err);
+      return res.status(500).json({ error: 'Greška u bazi podataka' });
+    }
+    res.json(results);
+  });
+});
+
+// Brisanje korisnika po ID-u
+app.delete('/api/Korisnik/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM korisnici WHERE id = ?';
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error('Greška pri brisanju:', err);
+      return res.status(500).json({ error: 'Greška u bazi podataka' });
+    }
+    res.json({ message: 'Korisnik uspješno obrisan' });
+  });
+});
+
+app.get('/Admin', (req, res) => {
+  const { adminId } = req.query;
+
+  if (!adminId) {
+    return res.status(400).json({ error: 'Admin ID nije poslan' });
+  }
+
+  const sql = `
+    SELECT COUNT(*) AS id_exists
+    FROM admin
+    WHERE admin_id = ?
+  `;
+
+  db.query(sql, [adminId], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Greška u bazi' });
+    }
+
+    res.json(result);
+  });
+});
+
+// Dohvat svih vozila
+app.get("/api/admin/vozila", (req, res) => {
+  const sql = "SELECT * FROM automobili";
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json(err);
+    res.json(results);
+  });
+});
+
+// Dodavanje vozila
+app.post("/api/admin/vozila", (req, res) => {
+  const {
+    naziv, marka, godina, tip, gorivo,
+    mjenjac, slika, opis, dostupno, lokacija_id
+  } = req.body;
+
+  const sql = `
+    INSERT INTO automobili
+    (naziv, marka, godina, tip, gorivo, mjenjac, slika, opis, dostupno, lokacija_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(sql, [
+    naziv, marka, godina, tip, gorivo,
+    mjenjac, slika, opis, dostupno, lokacija_id
+  ], err => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Vozilo dodano" });
+  });
+});
+
+// Brisanje vozila
+app.delete("/api/admin/vozila/:id", (req, res) => {
+  const sql = "DELETE FROM automobili WHERE id = ?";
+  db.query(sql, [req.params.id], err => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Vozilo obrisano" });
+  });
+});
+
+app.get("/api/admin/rezervacije", (req, res) => {
+  const sql = `
+    SELECT 
+      rezervacije.id, 
+      rezervacije.datum_od, 
+      rezervacije.datum_do, 
+      rezervacije.ukupna_cijena,
+      rezervacije.status,
+      automobili.naziv AS auto_naziv, 
+      korisnici.korisnicko_ime
+      FROM rezervacije
+      JOIN automobili ON rezervacije.automobil_id = automobili.id
+      JOIN korisnici ON rezervacije.korisnik_id = korisnici.id
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("SQL Greška:", err.sqlMessage);
+      return res.status(500).json({ error: err.sqlMessage });
+    }
+    res.json(results);
+  });
+});
+
 app.get('/api/rezervacije/moje', (req, res) => {
   const userIdHeader = req.headers['x-user-id'];  // case-insensitive
 

@@ -11,7 +11,31 @@
       <q-list>
         <q-item-label header> Izbornik </q-item-label>
 
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
+        <q-item v-if="korisnikIme" class="q-mb-sm bg-grey-2">
+          <q-item-section avatar>
+            <q-avatar color="primary" text-color="white" icon="person" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label caption>Prijavljeni ste kao:</q-item-label>
+            <q-item-label class="text-weight-bold">{{ korisnikIme }}</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <EssentialLink 
+          v-for="link in filtriraniLinkovi" 
+          :key="link.title" 
+          v-bind="link" 
+        />
+
+        <q-separator q-my-md v-if="korisnikIme" />
+
+        <q-item v-if="korisnikIme" clickable v-ripple @click="izvrsiOdjavu" class="text-red">
+          <q-item-section avatar>
+            <q-icon name="logout" color="red" />
+          </q-item-section>
+          <q-item-section>Odjavi se</q-item-section>
+        </q-item>
+
       </q-list>
     </q-drawer>
 
@@ -22,8 +46,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import EssentialLink from 'components/EssentialLink.vue'
+
+const router = useRouter()
+const leftDrawerOpen = ref(false)
+const korisnikIme = ref('')
+
+onMounted(() => {
+  korisnikIme.value = localStorage.getItem('korisnicko_ime') || ''
+})
 
 const linksList = [
   {
@@ -63,15 +96,17 @@ const linksList = [
   },
   {
     title: 'Registracija',
-    caption: '',
+    caption: 'Registrirajte se',
     icon: 'person',
     link: '#/registracija',
+    meta:'gost',
   },
   {
     title: 'Prijava',
-    caption: '',
+    caption: 'Prijavite se',
     icon: 'person',
     link: '#/prijava',
+    meta:'gost',
   },
   {
     title: 'Postavke',
@@ -81,9 +116,22 @@ const linksList = [
   },
 ]
 
-const leftDrawerOpen = ref(false)
+// funkcija koja filtrira linkove koje ne zelim vidjet kad je korisnik prijavljen
+const filtriraniLinkovi = computed(() => {
+  if (korisnikIme.value) {
+    // Ako postoji korisnikIme, izbaci linkove koji imaju meta: 'gost'
+    return linksList.filter(link => link.meta !== 'gost')
+  }
+  // Inace pokazi sve
+  return linksList
+})
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+function izvrsiOdjavu() {
+  localStorage.clear()
+  router.push('/prijava').then(() => { window.location.reload(); });
 }
 </script>

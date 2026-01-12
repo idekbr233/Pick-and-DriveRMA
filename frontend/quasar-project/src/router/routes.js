@@ -32,18 +32,29 @@ const routes = [
   {
     path: '/prijava',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [{ path: '', component: () => import('pages/PrijavaPage.vue') }],
   },
   {
     path: '/registracija',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [{ path: '', component: () => import('pages/RegistracijaPage.vue') }],
   },
   {
     path: '/postavke',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
   },
+  {
+  path: "/admin",
+  component: () => import("layouts/AdminLayout.vue"),
+  meta: { requiresAdmin: true },
+  children: [
+    { path: "", component: () => import("pages/AdminPage.vue") },
+    { path: "vozila", component: () => import("pages/AdminVozila.vue") }, 
+    { path: "rezervacije", component: () => import("pages/AdminRezervacije.vue") },
+    { path: "korisnici", component: () => import("pages/UpravljanjeKorisnicima.vue") }
+  ]
+ },
 
   // Always leave this as last one,
   // but you can also remove it
