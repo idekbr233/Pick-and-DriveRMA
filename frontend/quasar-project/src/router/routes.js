@@ -22,7 +22,8 @@ const routes = [
       { path: "", component: () => import("pages/AdminPage.vue") },
       { path: "vozila", component: () => import("pages/AdminVozila.vue") }, 
       { path: "rezervacije", component: () => import("pages/AdminRezervacije.vue") },
-      { path: "korisnici", component: () => import("pages/UpravljanjeKorisnicima.vue") }
+      { path: "korisnici", component: () => import("pages/UpravljanjeKorisnicima.vue") },
+      { path: "lokacije", component: () => import("pages/AdminLokacije.vue") }
     ]
   },
 

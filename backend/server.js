@@ -328,6 +328,44 @@ app.delete("/api/admin/vozila/:id", (req, res) => {
   });
 });
 
+// Dohvat svih lokacija - copy paste sam uzela od vozila samo promjenila values
+app.get("/api/admin/lokacije", (req, res) => {
+  const sql = "SELECT * FROM lokacije";
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json(err);
+    res.json(results);
+  });
+});
+
+// Dodavanje lokacija - isto ko gore
+app.post("/api/admin/lokacije", (req, res) => {
+  const {
+    grad, adresa, longitude, latitude, telefon, email
+  } = req.body;
+
+  const sql = `
+    INSERT INTO lokacije
+    (grad, adresa, longitude, latitude, telefon, email)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(sql, [
+    grad, adresa, longitude, latitude, telefon, email
+  ], err => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Vozilo dodano" });
+  });
+});
+
+// Brisanje lokacije
+app.delete("/api/admin/lokacije/:id", (req, res) => {
+  const sql = "DELETE FROM lokacije WHERE id = ?";
+  db.query(sql, [req.params.id], err => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Vozilo obrisano" });
+  });
+});
+
 app.get("/api/admin/rezervacije", (req, res) => {
   const sql = `
     SELECT 

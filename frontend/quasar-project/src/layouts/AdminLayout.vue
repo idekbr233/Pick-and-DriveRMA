@@ -106,6 +106,12 @@ const linksList = [
     icon: "people",
     to: "/admin/korisnici",
   },
+  {
+    title: "Lokacije",
+    caption: "Upravljanje lokacijama",
+    icon: "location",
+    to: "/admin/lokacije",
+  },
 ];
 
 const leftDrawerOpen = ref(false);
