@@ -1,6 +1,6 @@
 const routes = [
   {
-    path: '/', //Uređene rute
+    path: '/', //Uređene rute - dosl samo urednije
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
@@ -11,7 +11,8 @@ const routes = [
       { path: 'lokacije', component: () => import('pages/LokacijaPage.vue') },
       { path: 'prijava', component: () => import('pages/PrijavaPage.vue') },
       { path: 'registracija', component: () => import('pages/RegistracijaPage.vue') },
-      { path: 'postavkekorisnika', component: () => import('pages/PostavkeKorisnika.vue') }
+      { path: 'postavkekorisnika', component: () => import('pages/PostavkeKorisnika.vue') },
+      { path: 'rezervacija/:id', name: "rezerviraj", component: () => import('pages/RezervacijaPage.vue') }
     ]
   },
   {

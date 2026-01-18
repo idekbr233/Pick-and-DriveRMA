@@ -109,7 +109,7 @@ const linksList = [
   {
     title: "Lokacije",
     caption: "Upravljanje lokacijama",
-    icon: "location",
+    icon: "place",
     to: "/admin/lokacije",
   },
 ];

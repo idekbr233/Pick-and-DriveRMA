@@ -149,7 +149,6 @@
               <div class="text-body1">{{ odabranoVozilo.mjenjac || 'N/A' }}</div>
             </div>
           </div>
-
           <div class="col-12 q-mt-md">
             <div class="text-subtitle1 text-weight-bold">Opis:</div>
             <p class="text-body2">{{ odabranoVozilo.opis || 'Opis nije dostupan u bazi.' }}</p>
@@ -160,6 +159,7 @@
       <q-separator />
 
       <q-card-actions align="right">
+        <q-btn flat label="Rezerviraj" color="primary" :disable="!odabranoVozilo.dostupno" @click="rezervirajAuto(odabranoVozilo.id)"/>
         <q-btn flat label="Zatvori" color="primary" @click="zatvoriDetalje" />
       </q-card-actions>
     </q-card>
@@ -234,6 +234,16 @@ const prikaziDetalje = (vozilo) => {
 const zatvoriDetalje = () => {
   odabranoVozilo.value = null
   prikazModala.value = false
+}
+
+const rezervirajAuto = (voziloId) => {
+  prikazModala.value = false
+  console.log('ID koji šaljem:', voziloId)
+  console.log('odabranoVozilo:', odabranoVozilo.value)
+  router.push({ //Da se ode na str na koju se biraju datumi za rez.
+    name: 'rezerviraj', 
+    params: { id: voziloId }
+  })
 }
 </script>
 

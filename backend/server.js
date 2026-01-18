@@ -13,6 +13,8 @@ const db = mysql.createConnection({
   database: 'ppilat'
 });
 
+// Ubacite komentare za API-je jer sine moj ovo je nemoguće na brzinu vidjet gdje sto pocinje gdje zavrsava
+
 db.connect(err => {
   if (err) console.error('Greška pri spajanju:', err);
   else console.log('Povezano s MySQL bazom!');
@@ -454,8 +456,8 @@ app.patch('/api/rezervacije/:id/otkazi', (req, res) => {
 });
 
 app.get("/api/automobili-potrebnapolja", (req, res) => {
-  // SQL upit za dohvaćanje SVIH potrebnih polja, dodan naziv i slike
-  const query = "SELECT naziv, model, godina, tip, gorivo, mjenjac, slika, opis FROM automobili";
+  // SQL upit za dohvaćanje SVIH potrebnih polja, dodan naziv i slike + kasnije dodana dostupnost i id za rezervacije, maknut model jer se ne koristi
+  const query = "SELECT id, naziv, godina, tip, gorivo, mjenjac, slika, opis, dostupno FROM automobili";
   db.query(query, (err, results) => {
     if (err) {
       console.error("Greška pri dohvaćanju automobila:", err);
@@ -466,6 +468,49 @@ app.get("/api/automobili-potrebnapolja", (req, res) => {
       res.json(results);
     }
   });
+});
+
+app.post('/rezervacije', (req, res) => {
+  console.log('BODY:', req.body)
+  console.log('HEADERS:', req.headers)
+  const { automobil_id, datum_od, datum_do } = req.body
+  const korisnik_id = Number(req.headers['x-user-id'])
+  const odKad = new Date(datum_od)
+  const doKad = new Date(datum_do)
+
+  if (doKad <= odKad) {
+    return res.status(400).json({ error: 'Datum do mora biti nakon datuma od' })
+  }
+
+  const dani = Math.ceil((doKad - odKad) / (1000 * 60 * 60 * 24))
+
+  // SELECT
+  db.query(
+    'SELECT cijena_dan FROM automobili WHERE id = ?',
+    [automobil_id],
+    (err, rows) => {
+      if (err) {
+      return res.status(500).json({ error: 'Greška baze (SELECT)' })
+      }
+
+      const ukupna_cijena = dani * rows[0].cijena_dan
+
+      // INSERT
+      db.query(
+        `INSERT INTO rezervacije
+         (korisnik_id, automobil_id, datum_od, datum_do, ukupna_cijena)
+         VALUES (?, ?, ?, ?, ?)`,
+        [korisnik_id, automobil_id, datum_od, datum_do, ukupna_cijena],
+        (err) => {
+          if (err) {
+            console.error(err)
+            return res.status(500).json({ error: 'Greška baze (INSERT)' });
+          }
+        res.status(200).json({ message: 'Uspjeh!' });
+        }
+      )
+    }
+  );
 });
 
 app.listen(3000, () => console.log('Server radi na portu 3000'));

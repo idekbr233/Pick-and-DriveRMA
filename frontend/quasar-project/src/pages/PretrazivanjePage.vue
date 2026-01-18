@@ -93,11 +93,11 @@
       />
     </div>
 
-    <div style="flex: 1; overflow-y: auto; padding: 16px;">
+    <div style="flex: 1; overflow-y: auto; padding: 16px;"> 
       <div class="auto-grid">
         <q-card v-for="auto in cars" :key="auto.id" class="my-card">
           <q-img :src="auto.slika" :ratio="16/9" />
-          <q-card-section>
+          <q-card-section> 
             <div class="text-h6">{{ auto.naziv }}</div>
             <div>Godina: {{ auto.godina }}</div>
             <div>Tip: {{ auto.tip }}</div>
@@ -105,6 +105,7 @@
             <div>Mjenjač: {{ auto.mjenjac }}</div>
             <div>Lokacija: {{ auto.lokacija }}</div>
             <div>Dostupno: {{ auto.dostupno ? 'Da' : 'Ne' }}</div>
+            <q-btn label="Rezerviraj" color="primary" class="q-mt-sm" :disable="!auto.dostupno" @click="rezervirajAuto(auto.id)"/>
           </q-card-section>
         </q-card>
       </div>
@@ -115,6 +116,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 export default {
   setup() {
@@ -129,6 +131,14 @@ export default {
     const showUnavailable = ref(false)
     const selectedMjenjac = ref('')
     const cars = ref([])
+    const router = useRouter()
+
+    const rezervirajAuto = (autoId) => {
+      router.push({
+        name: 'rezerviraj',
+        params: { id: autoId }
+      })
+    }
 
     const fetchFilters = async () => {
       const res = await axios.get('http://localhost:3000/automobili')
@@ -183,7 +193,8 @@ export default {
       showUnavailable,
       cars,
       applyFilters,
-      resetFilters   
+      resetFilters,
+      rezervirajAuto   
     }
   }
 }
