@@ -15,7 +15,7 @@
 
         <q-card-actions>
           <q-btn
-            v-if="rez.status === 'Potvrđeno'"
+            v-if="rez.status === 'zakazana'"
             flat
             color="red"
             label="Otkaži"

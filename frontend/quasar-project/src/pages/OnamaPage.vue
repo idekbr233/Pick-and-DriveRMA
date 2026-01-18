@@ -15,11 +15,11 @@
         <h1 style="font-weight: bold;">Kontakt i poslovnice</h1>
           <h3>1. Naše poslovnice</h3>
           <p>
-            Trenutno nas možete pronaći u gradovima Rijeka,Zagreb,Split, Osijek, Zadar. Bez obzira gdje ste ga pokupili, automobil možete ostaviti u bilo kojoj našoj poslovnici.
+            Trenutno nas možete pronaći u gradovima Rijeka, Zagreb, Split, Osijek, Zadar, Dubrovnik, Novi Vinodolski, Pula, Šibenik, Hvar, Rovinj. Bez obzira gdje ste ga pokupili, automobil možete ostaviti u bilo kojoj našoj poslovnici.
           </p>
-          <p>
-            _________________________________________________________________________________________________________________________________________
-          </p>
+
+          <q-separator color="grey"/>
+
           <h3>2. Kontakt</h3>
           <p>
             <strong>Poslovnica Rijeka:</strong> rijeka@autonajam.hr <br>
@@ -27,10 +27,15 @@
             <strong>Poslovnica Split: </strong> split@autonajam.hr <br>
             <strong>Poslovnica Osijek: </strong> osijek@autonajam.hr <br>
             <strong>Poslovnica Zadar: </strong> zadar@autonajam.hr <br>
+            <strong>Poslovnica Dubrovnik: </strong> dubrovnik@autonajam.hr <br>
+            <strong>Poslovnica Novi Vinodolski: </strong> novivinodolski@autonajam.hr <br>
+            <strong>Poslovnica Pula: </strong> pula@autonajam.hr <br>
+            <strong>Poslovnica Šibenik: </strong> sibenik@autonajam.hr <br>
+            <strong>Poslovnica Hvar: </strong> hvar@autonajam.hr <br>
+            <strong>Poslovnica Rovinj: </strong> rovinj@autonajam.hr <br>
           </p>
-          <p>
-            _________________________________________________________________________________________________________________________________________
-          </p>
+
+          <q-separator color="grey" />
         
           <h3>3. Dodatna pitanja</h3>
           <p>
@@ -44,16 +49,4 @@
       </div>
     </div>
    </q-page>
-  </template> 
-
-         
-          
-    
-
-       
-      
-
-
-
- 
-
+</template>
