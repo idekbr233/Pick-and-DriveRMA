@@ -15,18 +15,6 @@ const routes = [
       { path: 'rezervacija/:id', name: "rezerviraj", component: () => import('pages/RezervacijaPage.vue') }
     ]
   },
-  {
-    path: "/admin",
-    component: () => import("layouts/AdminLayout.vue"),
-    meta: { requiresAdmin: true },
-    children: [
-      { path: "", component: () => import("pages/AdminPage.vue") },
-      { path: "vozila", component: () => import("pages/AdminVozila.vue") }, 
-      { path: "rezervacije", component: () => import("pages/AdminRezervacije.vue") },
-      { path: "korisnici", component: () => import("pages/UpravljanjeKorisnicima.vue") },
-      { path: "lokacije", component: () => import("pages/AdminLokacije.vue") }
-    ]
-  },
 
   // Always leave this as last one,
   // but you can also remove it
