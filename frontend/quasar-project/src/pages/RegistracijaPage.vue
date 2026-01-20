@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div style="max-width: 400px; margin: auto; padding: 20px;">
+    <div style="max-width: 400px; margin-top: 50px; padding: 20px;">
       <h2 class="text-center">Registracija</h2>
 
       <q-input filled v-model="ime" label="Ime" class="q-mb-md" />
@@ -9,55 +9,61 @@
       <q-input filled v-model="korisnicko_ime" label="Korisničko ime" class="q-mb-md" />
       <q-input filled v-model="lozinka" label="Lozinka" type="password" class="q-mb-md" />
 
-      <q-btn color="primary" label="Potvrdi" @click="registerUser" class="full-width" />
+      <q-btn label="Potvrdi" color="primary" @click="registracija" class="full-width" />
     </div>
   </q-page>
 </template>
 
 <script>
+import { ref } from 'vue'
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+const API = 'http://192.168.0.103:3000'
 
 export default {
-  data() {
-    return {
-      ime: '',
-      prezime: '',
-      email: '',
-      korisnicko_ime: '',
-      lozinka: '',
-    };
-  },
-  methods: {
-    async registerUser() {
+  setup() {
+    const ime = ref('')
+    const prezime = ref('')
+    const email = ref('')
+    const korisnicko_ime = ref('')
+    const lozinka = ref('')
+    const router= useRouter()
+
+    const registracija = async () => {
       // Validacija svih polja
-      if (!this.ime || !this.prezime || !this.email || !this.korisnicko_ime || !this.lozinka) {
-        alert('Molimo ispunite sva polja.');
-        return;
+      if 
+      (!ime.value || !prezime.value || !email.value || !korisnicko_ime.value || !lozinka.value) {
+        alert('Molimo ispunite sva polja.')
+        return
       }
 
       // Priprema payloada prema bazi
       const payload = {
-        ime: this.ime.trim(),
-        prezime: this.prezime.trim(),
-        email: this.email.trim(),
-        korisnicko_ime: this.korisnicko_ime.trim(),
-        lozinka: this.lozinka.trim()
-      };
+        ime: ime.value.trim(),
+        prezime: prezime.value.trim(),
+        email: email.value.trim(),
+        korisnicko_ime: korisnicko_ime.value.trim(),
+        lozinka: lozinka.value.trim()
+      }
 
       try {
-        const response = await axios.post('http://localhost:3000/api/Korisnik', payload);
-        alert(response.data.message);
+        const res = await axios.post(`${API}/korisnik`, payload)
+        alert(res.data.message)
 
-        // Resetiranje nakon uspjesne registracije
-        this.ime = '';
-        this.prezime = '';
-        this.email = '';
-        this.korisnicko_ime = '';
-        this.lozinka = '';
+        router.push('/prijava')
       } catch (error) {
-        console.error(error);
-        alert(error.response?.data?.error || 'Došlo je do greške pri registraciji.');
+        console.error(error)
+        alert('Došlo je do greške pri registraciji.')
       }
+    }
+    return {
+      ime,
+      prezime,
+      email,
+      korisnicko_ime,
+      lozinka,
+      registracija
     }
   }
 };

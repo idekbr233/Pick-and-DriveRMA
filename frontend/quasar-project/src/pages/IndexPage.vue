@@ -1,88 +1,53 @@
 <template>
   <q-page class="q-pa-none" style="background-color: #211c1c;">
     <q-img
-      src="/slike/main.png"
-      style="height: 100vh; width: 100%;"
+      src="/slike/mob.png"
+      style="height: 100%; width: 100%;"
       fit="cover"
     />
     <div class="q-pa-md" style="color: white;">
-      <h1 style="font-weight: bold;">NAŠA FLOTA</h1>
+      <h1 style="margin-top: 100px; margin-bottom: 0px;">NAŠA FLOTA</h1>
     </div>
-    <div class="q-pa-md row items-start q-gutter-md">
-      <q-card class="my-card">
-        <img src="/slike/SUV(0).jpg">
-
-        <q-card-section>
-          <div align="left">
-            <q-btn flat rounded label="SUV / Terenci" style="font-size: 20px; font-weight: bold;" @click="idiNaKategoriju('SUV')"/>
-          </div>
-        </q-card-section>
+    <div class="q-pa-sm row items-start q-gutter-sm">
+      <q-card class="my-card" @click="idiNaKategoriju('SUV')">
+        <img src="/slike/BMWX5.jpg">
+        <div class="absolute-bottom text-white text-center q-pa-sm overlay-title" style="font-size: 10vw; font-weight: bold;"> SUV / Terenci </div>
       </q-card>
-      <q-card class="my-card">
-        <img src="/slike/sedan(0).jpg">
-
-        <q-card-section>
-          <div align="left">
-            <q-btn flat rounded label="Sedan / Limuzina" style="font-size: 20px; font-weight: bold;" @click="idiNaKategoriju('Limuzina')"/>
-          </div>
-        </q-card-section>
+      <q-card class="my-card" @click="idiNaKategoriju('Limuzina')">
+        <img src="/slike/A4.jpg">
+        <div class="absolute-bottom text-white text-center q-pa-sm overlay-title" style="font-size: 10vw; font-weight: bold;"> Sedan / Limuzina </div>
       </q-card>
-      <q-card class="my-card">
-        <img src="/slike/sport(0).jpg">
-
-        <q-card-section>
-          <div align="left">
-            <q-btn flat rounded label="Sportski automobili" style="font-size: 20px; font-weight: bold; text-align: left;" @click="idiNaKategoriju('Sportski')"/>
-          </div>
-        </q-card-section>
+      <q-card class="my-card" @click="idiNaKategoriju('Sportski')">
+        <img src="/slike/911.jpg">
+        <div class="absolute-bottom text-white text-center q-pa-sm overlay-title" style="font-size: 10vw; font-weight: bold; color: black;"> Sportska vozila </div>
       </q-card>
-      <q-card class="my-card">
-        <img src="/slike/hatchback(0).jpeg">
-        <q-card-section>
-          <div align="left">
-            <q-btn flat rounded label="Kompaktna vozila" style="font-size: 20px; font-weight: bold;" @click="idiNaKategoriju('Kompakt')"/>
-          </div>
-        </q-card-section>
+      <q-card class="my-card" @click="idiNaKategoriju('Kompakt')">
+        <img src="/slike/i30N.jpg">
+        <div class="absolute-bottom text-white text-center q-pa-sm overlay-title" style="font-size: 10vw; font-weight: bold;"> Kompaktna vozila </div>
       </q-card>
-      <q-card class="my-card">
-        <img src="/slike/drugo.jpg" @click="idiNaKategoriju('Ostalo')" class="cursor-pointer">
+      <q-card class="my-card" @click="idiNaKategoriju('Ostalo')">
+        <img src="/slike/drugo.jpg">
       </q-card>
     </div>
-    <div class="row items-center q-pa-xl">
-      <div class="col-6" style="color: white;" >
-        <h1 style="font-weight: bold;">Kako to funkcionira?</h1>
-        <h3>1. Odaberi svoj automobil</h3>
-        <p>
-          Pregledaj našu flotu i pronađi savršeni automobil za svoje potrebe – od ekonomičnih gradskih vozila do luksuznih sportskih modela.
-        </p>
-        <p>
-          _________________________________________________________________________________________________________________________________________
-        </p>
+    <h2 class="q-pa-md" style="color:white; margin-top: 40vw">Kako to funkcionira?</h2>
+    <div class="row items-center q-pa-md">
+      <div class="col-9" style="color: white;" >
+        <h3 style="margin-top: 0;" >1. Odaberi svoj automobil</h3>
+        <p style="margin-right: 4vw;"> Pregledaj našu flotu i pronađi savršeni automobil za svoje potrebe – od ekonomičnih gradskih vozila do luksuznih sportskih modela. </p>
+        <p> ─────────────────────── </p>
         <h3>2. Rezerviraj odmah</h3>
-        <p>
-          Brzo i jednostavno: rezervaciju možeš napraviti online ili putem našeg tima, bez skrivenih uvjeta i komplikacija.
-        </p>
-        <p>
-          _________________________________________________________________________________________________________________________________________
-        </p>
+        <p style="margin-right: 4vw;"> Brzo i jednostavno: rezervaciju možeš napraviti online ili putem našeg tima, bez skrivenih uvjeta i komplikacija. </p>
+        <p> ─────────────────────── </p>
         <h3>3. Vozi i uživaj</h3>
-        <p>
-          Pregledaj našu flotu i pronađi savršeni automobil za svoje potrebe – od ekonomičnih gradskih vozila do luksuznih sportskih modela.
-        </p>
-        <p>
-          _________________________________________________________________________________________________________________________________________
-        </p>
-        <h3>4. Vrati bez brige</h3>
-        <p>
-          Vraćanje vozila je jednostavno i fleksibilno – mi se brinemo da sve prođe glatko i bez stresa.
-        </p>
-        <p>
-          _________________________________________________________________________________________________________________________________________
-        </p>
+        <p style="margin-right: 4vw;"> Pregledaj našu flotu i pronađi savršeni automobil za svoje potrebe – od ekonomičnih gradskih vozila do luksuznih sportskih modela. </p>
+        <p> ─────────────────────── </p>
+        <h3>4. Vrati bez brige</h3> 
+        <p style="margin-right: 4vw;"> Vraćanje vozila je jednostavno i fleksibilno – mi se brinemo da sve prođe glatko i bez stresa. </p>
+        <p> ─────────────────────── </p>
       </div>
 
-      <div class="col-6" align="right">
-        <q-img src="/slike/kljucevi(1).jpg" :ratio="5/7" style="max-width: 700px" />
+      <div class="col-3">
+        <q-img src="/slike/auti.jpg" :ratio="1/12.5"/>
       </div>
     </div>
   </q-page>
@@ -101,5 +66,4 @@ const idiNaKategoriju = (kategorija) => {
 <style lang="sass" scoped>
 .my-card
   width: 100%
-  max-width: 353px
 </style>

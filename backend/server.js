@@ -22,18 +22,20 @@ db.connect(err => {
 
 // GET /automobili - svi automobili s lokacijom
 app.get('/automobili', (req, res) => {
-    const sql = `
-        SELECT a.*, l.grad AS lokacija
-        FROM automobili a
-        LEFT JOIN lokacije l ON a.lokacija_id = l.id
-    `;
+  console.log('GET /automobili - request s IP:', req.ip);
 
-    db.query(sql, (err, results) => {
-        if (err) return res.status(500).send(err);
+  const sql = `
+    SELECT a.*, l.grad AS lokacija
+    FROM automobili a
+    LEFT JOIN lokacije l ON a.lokacija_id = l.id
+  `;
 
-        results.forEach(r => {
-            r.dostupno = r.dostupno === 1 ? 'Da' : 'Ne';
-        });
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).send(err);
+
+    results.forEach(r => {
+      r.dostupno = r.dostupno === 1 ? 'Da' : 'Ne';
+    });
 
     res.json(results);
   });
@@ -104,8 +106,8 @@ app.get('/pretraga', (req, res) => {
         res.json(results);
     });
 });
-
-app.post('/api/Korisnik', (req, res) => {
+/////
+app.post('/korisnik', (req, res) => {
   const { ime, prezime, email, korisnicko_ime, lozinka } = req.body;
 
   db.query('SELECT MAX(id) AS maxId FROM korisnici', (err, results) => {
@@ -392,4 +394,4 @@ app.post('/rezervacije', (req, res) => {
   })
 });
 
-app.listen(3000, () => console.log('Server radi na portu 3000'));
+app.listen(3000, '0.0.0.0', () => console.log('Server radi na portu 3000'));

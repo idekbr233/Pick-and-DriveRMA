@@ -1,12 +1,11 @@
 <template>
-  <q-page padding style="height: 100vh; display: flex;">
-
-    <div style="width: 300px; flex-shrink: 0; overflow-y: auto; border-right: 1px solid #ddd; padding: 16px;">
-      <div class="text-h6 q-mb-md">Filteri</div>
+  <q-page class="q-pa-md">
+    <div class="q-mb-xl">
+      <h4 class="q-mb-lg q-mt-md">FILTERI</h4>
 
       <!-- Marka -->
       <div class="q-mb-md">
-        <div class="text-subtitle1 q-mb-sm">Marka vozila</div>
+        <div class="text-subtitle2 q-mb-md">Marka vozila</div>
         <q-checkbox
           v-for="b in marka"
           :key="b"
@@ -20,8 +19,8 @@
       <q-separator color="grey-3" :thickness="1" />
 
       <!-- Tip vozila -->
-      <div class="q-mb-md">
-        <div class="text-subtitle1 q-mb-sm">Tip vozila</div>
+      <div class="q-mb-md q-mt-md">
+        <div class="text-subtitle2 q-mb-md">Tip vozila</div>
         <q-checkbox
           v-for="t in tipovi"
           :key="t"
@@ -50,8 +49,8 @@
       </div>
 
       <!-- Gorivo -->
-      <div class="q-mb-md">
-        <div class="text-subtitle1 q-mb-sm">Vrsta goriva</div>
+      <div class="q-mb-lg q-mt-md">
+        <div class="text-subtitle2 q-mb-md">Vrsta goriva</div>
         <q-checkbox
           v-for="g in gorivo"
           :key="g"
@@ -63,7 +62,7 @@
       </div>
 
       <!-- Lokacija -->
-      <div class="q-mb-md">
+      <div class="q-mb-sm">
         <q-select 
           filled
           rounded 
@@ -76,7 +75,7 @@
       </div>
 
       <!-- Dostupnost -->
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <q-toggle
           v-model="showUnavailable"
           label="Prikaži trenutno nedostupna vozila?"
@@ -93,12 +92,12 @@
       />
     </div>
 
-    <div style="flex: 1; overflow-y: auto; padding: 16px;"> 
+    <div style="col"> 
       <div class="auto-grid">
         <q-card v-for="auto in cars" :key="auto.id" class="my-card">
           <q-img :src="auto.slika" :ratio="16/9" />
           <q-card-section> 
-            <div class="text-h6">{{ auto.naziv }}</div>
+            <div class="text-h5">{{ auto.naziv }}</div>
             <div>Godina: {{ auto.godina }}</div>
             <div>Tip: {{ auto.tip }}</div>
             <div>Gorivo: {{ auto.gorivo }}</div>
@@ -117,6 +116,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+const API = 'http://192.168.0.103:3000'
 
 export default {
   setup() {
@@ -141,13 +141,13 @@ export default {
     }
 
     const fetchFilters = async () => {
-      const res = await axios.get('http://localhost:3000/automobili')
+      const res = await axios.get(`${API}/automobili`)
       const auti = res.data
       marka.value = [...new Set(auti.map(a => a.marka))]
       tipovi.value = [...new Set(auti.map(a => a.tip))]
       gorivo.value = [...new Set(auti.map(a => a.gorivo))]
 
-      const lokRes = await axios.get('http://localhost:3000/lokacije')
+      const lokRes = await axios.get(`${API}/lokacije`)
       lokacije.value = lokRes.data.map(l => l.grad)
     }
 
@@ -159,7 +159,7 @@ export default {
       if (selectedGorivo.value.length) params.gorivo = selectedGorivo.value.join(',')
       if (selectedLokacije.value) params.lokacija = selectedLokacije.value
       if (!showUnavailable.value) params.dostupno = 1
-      const res = await axios.get('http://localhost:3000/pretraga', { params })
+      const res = await axios.get(`${API}/pretraga`, { params })
       cars.value = res.data
     }
 
