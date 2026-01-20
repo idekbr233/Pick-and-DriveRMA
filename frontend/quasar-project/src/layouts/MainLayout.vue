@@ -3,7 +3,7 @@
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
-        <q-toolbar-title> Menu </q-toolbar-title>
+        <q-toolbar-title> MENU </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -133,3 +133,32 @@ function izvrsiOdjavu() {
   router.push('/prijava').then(() => { window.location.reload(); });
 }
 </script>
+
+<style lang="sass">
+.q-toolbar
+  min-height: 50px // Debljina toolbara
+  padding: 0 16px  // Malo više prostora sa strana
+
+.q-toolbar__title
+  font-family: 'Zalando Sans Expanded';
+  font-size: 1.2rem   // Veličina naslova
+  font-weight: 600
+  letter-spacing: 2px
+
+.q-item__section--main
+  font-family: 'Zalando Sans Expanded';
+  font-size: 0.9rem  // Povećano sa cca 14px na 18px
+  font-weight: 700
+  padding-bottom: 4px
+
+.q-item__label--caption
+  color: #757575
+  font-size: 0.7rem
+
+.q-item__section--avatar .q-icon
+  font-size: 24px
+
+.q-item
+  min-height: 65px 
+  padding: 12px 16px
+</style>

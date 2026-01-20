@@ -14,7 +14,7 @@
         svakom klijentu.
       </p>
 
-      <h2 style="font-size: 11vw; font-weight: 700;">Kontakt i poslovnice</h2>
+      <h2>Kontakt i poslovnice</h2>
         <h3>1. Naše poslovnice</h3>
         <p class="q-mb-xl">
           Trenutno nas možete pronaći u gradovima Rijeka, Zagreb, Split, Osijek, Zadar, Dubrovnik, Novi Vinodolski, Pula, Šibenik, Hvar, Rovinj. Bez obzira gdje ste ga pokupili, automobil možete ostaviti u bilo kojoj našoj poslovnici.
@@ -44,6 +44,6 @@
           Ukoliko imate dodatna pitanja, slobodno nam se javite. Naš tim odgovoriti će vam u najkraćem mogućem roku.
         </p>  
     </div>
-    <q-img src="/slike/kljucevi(1).jpg" :ratio="16/9" style="max-width: 100%" />
+    <q-img src="/slike/kljucevi.jpg" :ratio="16/8" style="max-width: 100%" />
    </q-page>
 </template>

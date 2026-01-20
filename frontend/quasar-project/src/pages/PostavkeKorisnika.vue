@@ -2,7 +2,7 @@
   <q-page class="q-pa-md flex flex-center" style="background-color: #211c1c">
     <q-img
       src="/slike/mob.png"
-      style="height: 180vw; width: 100%; position: absolute; top: 0; left: 0"
+      style="height: 100%; width: 100%; position: absolute; top: 0; left: 0"
       fit="cover"
     />
 

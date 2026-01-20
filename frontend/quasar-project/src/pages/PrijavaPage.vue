@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center" style="background: #eee;">
-    <div class="q-pa-md shadow-2 bg-white" style="border-radius: 10px; max-width: 400px; width: 100%;">
+    <div class="q-pa-md shadow-2 bg-white" style="border-radius: 10px; max-width: 25rem; width: 90%;">
       <h2 class="text-center" style="font-size: 2.5rem; margin-bottom: 20px;">Prijava</h2>
 
       <q-input v-model="user.korisnicko_ime" label="Korisničko ime" filled class="q-mb-md" />

@@ -9,9 +9,9 @@
       </div>
     </q-toolbar>
 
-    <div class="row q-mt-none no-wrap" style="height: calc(100vh - 41vw);">
+    <div class="row q-mt-none no-wrap" style="height: 100vh;">
       <div v-show="drawerOpen" class="col-6 col-md-4">
-        <q-card flat class="overflow-auto" style="max-height: calc(100vh - 41vw);">
+        <q-card flat class="overflow-auto" style="max-height: 100vh;">
           <q-list bordered separator>
             <q-item v-for="loc in filteredLocations" :key="loc.id" clickable @click="selectLocation(loc)">
               <q-item-section>

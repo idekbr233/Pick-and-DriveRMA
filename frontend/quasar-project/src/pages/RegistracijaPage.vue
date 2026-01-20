@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div style="max-width: 400px; margin-top: 50px; padding: 20px;">
+    <div style="max-width: 600px; margin-top: 50px; padding: 20px;">
       <h2 class="text-center">Registracija</h2>
 
       <q-input filled v-model="ime" label="Ime" class="q-mb-md" />

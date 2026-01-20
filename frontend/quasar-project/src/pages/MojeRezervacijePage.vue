@@ -31,36 +31,37 @@
 </template>
 
 <script>
+import { api } from 'boot/axios'
+
 export default {
+
   name: 'MojeRezervacije',
+
   data() {
     return {
       rezervacije: [],
     }
   },
-  async mounted() {
-    await this.loadRezervacije()
+
+  mounted() {
+    this.loadRezervacije()
   },
+
   methods: {
     async loadRezervacije() {
+      const userId = localStorage.getItem('ID_korisnika')
+      if (!userId) {
+          this.$router.push('/prijava'); // Promjenjeno iz alerta da prebaci na prijavu
+        return
+      }
       try {
-        const userId = localStorage.getItem('ID_korisnika')
-        if (!userId) {
-           this.$router.push('/prijava'); // Promjenjeno iz alerta da prebaci na prijavu
-          return
-        }
-
-        const res = await fetch('http://localhost:3000/api/rezervacije/moje', {
+        const res = await api.get('/api/rezervacije/moje', {
           headers: {
             'X-User-ID': userId,
-            'Content-Type': 'application/json',
           },
         })
 
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-
-        const data = await res.json()
-        this.rezervacije = data
+        this.rezervacije = res.data
       } catch (err) {
         console.error('Greška pri dohvaćanju rezervacija:', err)
       }
@@ -76,7 +77,7 @@ export default {
         minute: '2-digit',
       })
     },
-    otkaziRezervaciju(id) {
+    async otkaziRezervaciju(id) {
       const userId = localStorage.getItem('ID_korisnika')
 
       if (!userId) {
@@ -84,26 +85,20 @@ export default {
         return
       }
 
-      if (confirm('Jeste li sigurni da želite otkazati ovu rezervaciju?')) {
-        fetch(`http://localhost:3000/api/rezervacije/${id}/otkazi`, {
-          method: 'PATCH',
+      if (!confirm('Jeste li sigurni da želite otkazati ovu rezervaciju?')) return 
+
+      try {
+        await api.patch(`/api/rezervacije/${id}/otkazi`, null, {
           headers: {
             'X-User-ID': userId,
-            'Content-Type': 'application/json',
           },
         })
-          .then((res) => {
-            if (!res.ok) throw new Error('Greška pri otkazivanju')
-            return res.json()
-          })
-          .then(() => {
-            this.loadRezervacije()
-            alert('Rezervacija otkazana!')
-          })
-          .catch((err) => {
-            console.error(err)
-            alert('Greška: ' + err.message)
-          })
+          
+        this.loadRezervacije()
+        alert('Rezervacija otkazana!')
+      } catch {
+        console.error('Greška pri otkazivanju')
+        alert('Greška pri otkazivanju rezervacije')
       }
     },
   },
