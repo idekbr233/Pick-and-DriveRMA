@@ -28,7 +28,7 @@
 <script>
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import axios from 'axios'
+import { api } from 'boot/axios'
 
 export default {
   setup () {
@@ -48,7 +48,7 @@ export default {
     }
 
     try {
-        await axios.post('http://localhost:3000/rezervacije', {
+        await api.post('/rezervacije', {
             automobil_id: automobilId,
             datum_od: datumOd.value,
             datum_do: datumDo.value
