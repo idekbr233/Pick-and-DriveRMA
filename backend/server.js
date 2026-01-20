@@ -160,7 +160,7 @@ app.post('/api/prijava', (req, res) => {
   });
 });
 
-// Dohvat svih korisnika iz baze
+// Dohvat svih korisnika iz baze -- Admin?
 app.get('/api/korisnici', (req, res) => {
   const sql = 'SELECT id, ime, prezime, korisnicko_ime, email FROM korisnici';
   db.query(sql, (err, results) => {

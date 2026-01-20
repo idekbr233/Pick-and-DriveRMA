@@ -6,7 +6,7 @@
       fit="cover"
     />
     <div class="q-pa-md" style="color: white;">
-      <h1 style="margin-top: 100px; margin-bottom: 0px;">NAŠA FLOTA</h1>
+      <h2 style="margin-top: 100px; margin-bottom: 0px;">NAŠA FLOTA</h2>
     </div>
     <div class="q-pa-sm row items-start q-gutter-sm">
       <q-card class="my-card" @click="idiNaKategoriju('SUV')">
@@ -29,7 +29,7 @@
         <img src="/slike/drugo.jpg">
       </q-card>
     </div>
-    <h2 class="q-pa-md" style="color:white; margin-top: 40vw">Kako to funkcionira?</h2>
+    <h2 class="q-pa-md q-mb-none" style="color:white; margin-top: 40vw">Kako to funkcionira?</h2>
     <div class="row items-center q-pa-md">
       <div class="col-9" style="color: white;" >
         <h3 style="margin-top: 0;" >1. Odaberi svoj automobil</h3>

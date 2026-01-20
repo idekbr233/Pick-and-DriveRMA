@@ -12,10 +12,8 @@
 
 <script>
 import { ref } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
-
-const API = 'http://192.168.0.103:3000'
+import { api } from 'boot/axios'
 
 export default {
   setup() {
@@ -33,7 +31,7 @@ export default {
       }
 
       try {
-        const res = await axios.post(`${API}/api/prijava`, {
+        const res = await api.post('/api/prijava', {
           korisnicko_ime: user.value.korisnicko_ime,
           lozinka: user.value.lozinka
         })

@@ -1,6 +1,7 @@
 <template>
-  <q-page padding>
-    <q-toolbar class="bg-primary text-white">
+  <q-page class="overflow-hidden">
+    <q-toolbar class="bg-secondary text-white">
+      <q-btn flat round icon="place" @click="drawerOpen = !drawerOpen" />
       <q-toolbar-title>Lokacije</q-toolbar-title>
       <div class="row items-center">
         <q-input dense debounce="300" v-model="query" placeholder="Pretraži..." outlined class="q-mr-sm black-input" bg-color="white"/>
@@ -8,9 +9,9 @@
       </div>
     </q-toolbar>
 
-    <div class="row q-mt-md" style="height: calc(100vh - 120px);">
-      <div class="col-12 col-md-4">
-        <q-card flat class="full-height overflow-auto">
+    <div class="row q-mt-none no-wrap" style="height: calc(100vh - 41vw);">
+      <div v-show="drawerOpen" class="col-6 col-md-4">
+        <q-card flat class="overflow-auto" style="max-height: calc(100vh - 41vw);">
           <q-list bordered separator>
             <q-item v-for="loc in filteredLocations" :key="loc.id" clickable @click="selectLocation(loc)">
               <q-item-section>
@@ -27,7 +28,7 @@
         </q-card>
       </div>
 
-      <div class="col-12 col-md-8">
+      <div :class="drawerOpen ? 'col-12 col-md-8' : 'col-12'">
         <div ref="mapContainer" style="height: 100%; width: 100%; min-height: 400px;"></div>
       </div>
     </div>
@@ -38,6 +39,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { api } from 'boot/axios'
 
 // Slike markera - promjena da radi - maknuto koristenje .mergeOptions
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
@@ -61,6 +63,7 @@ const mapContainer = ref(null)
 const markers = ref([])
 const query = ref('')
 const locations = ref([]) // Ovdje dolaze podaci iz baze
+const drawerOpen = ref(true)
 
 // Filtriranje koristi nove nazive: grad i adresa
 const filteredLocations = computed(() => {
@@ -74,9 +77,8 @@ const filteredLocations = computed(() => {
 // Dohvaćanje podataka s tvog servera
 async function fetchLocations() {
   try {
-    const response = await fetch('http://localhost:3000/lokacije') //bile su male greške u Heidi, pa je to editano
-    const data = await response.json()
-    locations.value = data
+    const response = await api.get('/lokacije') //bile su male greške u Heidi, pa je to editano
+    locations.value = response.data
     rebuildMarkers()
     
     setTimeout(() => {
@@ -113,6 +115,7 @@ function selectLocation(loc) {
     return p.lat == loc.latitude && p.lng == loc.longitude
   })
   if (m) m.openPopup()
+  drawerOpen.value = false
 }
 
 onMounted(() => {

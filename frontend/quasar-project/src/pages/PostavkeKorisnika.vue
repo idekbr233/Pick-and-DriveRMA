@@ -1,8 +1,8 @@
 <template>
   <q-page class="q-pa-md flex flex-center" style="background-color: #211c1c">
     <q-img
-      src="/slike/main.png"
-      style="height: 100vh; width: 100%; position: absolute; top: 0; left: 0"
+      src="/slike/mob.png"
+      style="height: 180vw; width: 100%; position: absolute; top: 0; left: 0"
       fit="cover"
     />
 
@@ -56,7 +56,7 @@
 <script setup>
 import { ref } from 'vue'
 import { onMounted } from 'vue'
-import axios from 'axios'
+import { api } from 'boot/axios'
 
 const userId = localStorage.getItem('ID_korisnika')
 
@@ -69,7 +69,7 @@ const user = ref({
 
 onMounted(async () => {
   try {
-    const { data } = await axios.get('http://localhost:3000/api/user', {
+    const { data } = await api.get('/api/user', {
       headers: {'x-user-id': userId }
     })
     user.value = data
@@ -81,7 +81,7 @@ onMounted(async () => {
 const saveSettings = async () => { //Editano za error i par sitnica + da se korisnicko ime update na layoutu
   try {
     console.log('Spremanje podataka:', user.value)
-    await axios.put('http://localhost:3000/api/user', 
+    await api.put('/api/user', 
     {
         ime: user.value.ime,
         prezime: user.value.prezime,

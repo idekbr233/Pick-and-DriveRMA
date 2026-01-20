@@ -114,9 +114,8 @@
 
 <script>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
-const API = 'http://192.168.0.103:3000'
+import { api } from 'boot/axios'
 
 export default {
   setup() {
@@ -141,13 +140,13 @@ export default {
     }
 
     const fetchFilters = async () => {
-      const res = await axios.get(`${API}/automobili`)
+      const res = await api.get('/automobili')
       const auti = res.data
       marka.value = [...new Set(auti.map(a => a.marka))]
       tipovi.value = [...new Set(auti.map(a => a.tip))]
       gorivo.value = [...new Set(auti.map(a => a.gorivo))]
 
-      const lokRes = await axios.get(`${API}/lokacije`)
+      const lokRes = await api.get('/lokacije')
       lokacije.value = lokRes.data.map(l => l.grad)
     }
 
@@ -159,7 +158,7 @@ export default {
       if (selectedGorivo.value.length) params.gorivo = selectedGorivo.value.join(',')
       if (selectedLokacije.value) params.lokacija = selectedLokacije.value
       if (!showUnavailable.value) params.dostupno = 1
-      const res = await axios.get(`${API}/pretraga`, { params })
+      const res = await api.get('/pretraga', { params })
       cars.value = res.data
     }
 

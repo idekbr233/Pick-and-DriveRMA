@@ -16,10 +16,9 @@
 
 <script>
 import { ref } from 'vue'
-import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { api } from 'boot/axios'
 
-const API = 'http://192.168.0.103:3000'
 
 export default {
   setup() {
@@ -48,7 +47,7 @@ export default {
       }
 
       try {
-        const res = await axios.post(`${API}/korisnik`, payload)
+        const res = await api.post('/korisnik', payload)
         alert(res.data.message)
 
         router.push('/prijava')
