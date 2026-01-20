@@ -57,6 +57,7 @@
 import { ref } from 'vue'
 import { onMounted } from 'vue'
 import { api } from 'boot/axios'
+import { korisnikFirst, korisnikIme, korisnikLast } from 'boot/auth'
 
 const userId = localStorage.getItem('ID_korisnika')
 
@@ -94,7 +95,11 @@ const saveSettings = async () => { //Editano za error i par sitnica + da se kori
     
     alert("Postavke su uspješno spremljene!");
     localStorage.setItem('korisnicko_ime', user.value.korisnicko_ime)
-    window.location.reload()
+    korisnikIme.value = user.value.korisnicko_ime
+    localStorage.setItem('ime', user.value.ime)
+    korisnikFirst.value = user.value.ime
+    localStorage.setItem('prezime', user.value.prezime)
+    korisnikLast.value = user.value.prezime
   } catch {
     alert("Spremanje nije uspjelo.");
   }

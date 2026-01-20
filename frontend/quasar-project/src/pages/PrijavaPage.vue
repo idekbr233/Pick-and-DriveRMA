@@ -14,6 +14,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { api } from 'boot/axios'
+import { korisnikIme } from 'boot/auth'
 
 export default {
   setup() {
@@ -40,11 +41,12 @@ export default {
 
         localStorage.setItem('prijavljen', 'true')
         localStorage.setItem('korisnicko_ime', korisnik.korisnicko_ime)
+        korisnikIme.value = korisnik.korisnicko_ime
         localStorage.setItem('ID_korisnika', korisnik.id) // dodan ID korisnika za MojeRezervacije.vue
+        localStorage.setItem("userRole", "user");
         alert("Prijava uspješna!")
 
-        router.push('/');
-
+        router.push('/')
       } catch {
         alert('Neispravni podaci.')
       }

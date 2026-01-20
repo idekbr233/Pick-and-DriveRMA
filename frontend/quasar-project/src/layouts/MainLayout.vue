@@ -46,17 +46,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import EssentialLink from 'components/EssentialLink.vue'
+import { korisnikIme } from 'boot/auth'
 
 const router = useRouter()
 const leftDrawerOpen = ref(false)
-const korisnikIme = ref('')
-
-onMounted(() => {
-  korisnikIme.value = localStorage.getItem('korisnicko_ime') || ''
-})
 
 const linksList = [ // maknut pregled posto se na pocetku pristupa sa indexa
   {
