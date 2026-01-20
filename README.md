@@ -1,2 +1,2 @@
 # Pick-and-Drive
-# Test dal je odvojeno
+# Ostalo: Moje Rezervacije, Pregled, Rezervacije (kao za rezervirat)
