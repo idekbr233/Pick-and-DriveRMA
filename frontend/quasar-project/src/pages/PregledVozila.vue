@@ -6,16 +6,16 @@
       icon="arrow_back"
       label="Natrag na kategorije"
       @click="zatvoriVozila"
-      class="q-mb-md"
+      class="q-mb-none"
     />
-  </div> 
+  </div>
 
-  <div class="q-pa-md row items-start q-gutter-md" v-if="!aktivnaKategorija">
-    <q-card class="my-card col-xs-12 col-sm-6 col-md-4 col-lg-3"> 
+  <div class="q-pa-md q-gutter-md" v-if="!aktivnaKategorija">
+    <q-card class="my-card">
       <img src="/slike/SUV(0).jpg" />
-      <q-card-section> 
-        <div align="left"> 
-          <q-btn 
+      <q-card-section>
+        <div align="left">
+          <q-btn
             flat
             rounded
             label="SUV / Terenci"
@@ -26,7 +26,7 @@
       </q-card-section>
     </q-card>
 
-    <q-card class="my-card col-xs-12 col-sm-6 col-md-4 col-lg-3">
+    <q-card class="my-card">
       <img src="/slike/sedan(0).jpg" />
       <q-card-section>
         <div align="left">
@@ -41,7 +41,7 @@
       </q-card-section>
     </q-card>
 
-    <q-card class="my-card col-xs-12 col-sm-6 col-md-4 col-lg-3">
+    <q-card class="my-card">
       <img src="/slike/sport(0).jpg" />
       <q-card-section>
         <div align="left">
@@ -56,7 +56,7 @@
       </q-card-section>
     </q-card>
 
-    <q-card class="my-card col-xs-12 col-sm-6 col-md-4 col-lg-3">
+    <q-card class="my-card">
       <img src="/slike/hatchback(0).jpeg" />
       <q-card-section>
         <div align="left">
@@ -71,13 +71,13 @@
       </q-card-section>
     </q-card>
 
-    <q-card class="my-card col-xs-12 col-sm-6 col-md-4 col-lg-3">
+    <q-card class="my-card">
       <img src="/slike/drugo.jpg" @click="otvoriKategoriju('Kombi')" class="cursor-pointer" />
     </q-card>
   </div>
 
-  <div class="q-pa-md row items-start q-gutter-md" v-else>
-    <div class="col-12 q-mb-md">
+  <div class="q-pa-md q-gutter-md" v-else>
+    <div class="q-mb-sm q-mt-none">
       <h2>{{ aktivnaKategorija }}</h2>
     </div>
 
@@ -87,7 +87,7 @@
     </div>
 
     <q-card
-      class="my-card col-xs-12 col-sm-6 col-md-4 col-lg-3"
+      class="my-card"
       v-for="vozilo in filtriranaVozila"
       :key="vozilo.naziv"
     >
@@ -117,9 +117,9 @@
   </div>
 
   <q-dialog v-model="prikazModala">
-    <q-card v-if="odabranoVozilo" style="width: 700px; max-width: 80vw">
+    <q-card v-if="odabranoVozilo" style="width: 90%">
       <q-card-section class="row items-center">
-        <div class="text-h5 text-primary">Detalji o vozilu: {{ odabranoVozilo.naziv }}</div>
+        <div class="text-h6 text-primary">Detalji: {{ odabranoVozilo.naziv }}</div>
         <q-space />
         <q-btn icon="close" flat round dense @click="zatvoriDetalje" />
       </q-card-section>
@@ -129,7 +129,7 @@
       <q-card-section style="max-height: 50vh" class="scroll">
         <div class="row q-col-gutter-md">
           <div class="col-xs-12 col-sm-6">
-            <q-img :src="odabranoVozilo.slika" ratio="1" style="border-radius: 8px" />
+            <q-img :src="odabranoVozilo.slika" :ratio="16/9" style="border-radius: 8px" />
           </div>
           <div class="col-xs-12 col-sm-6">
             <div class="q-mb-md">
@@ -148,10 +148,10 @@
               <div class="text-subtitle1 text-weight-bold">Mjenjač:</div>
               <div class="text-body1">{{ odabranoVozilo.mjenjac || 'N/A' }}</div>
             </div>
-          </div>
-          <div class="col-12 q-mt-md">
-            <div class="text-subtitle1 text-weight-bold">Opis:</div>
-            <p class="text-body2">{{ odabranoVozilo.opis || 'Opis nije dostupan u bazi.' }}</p>
+            <div class="q-mt-none">
+              <div class="text-subtitle1 text-weight-bold">Opis:</div>
+              <div class="text-body1">{{ odabranoVozilo.opis || 'Opis nije dostupan u bazi.' }}</div>
+            </div>
           </div>
         </div>
       </q-card-section>
@@ -166,9 +166,10 @@
   </q-dialog>
 </template>
 
-<script setup> //Dodane rute i router
+<script setup>
+//Dodane rute i router
 import { ref, computed, onMounted, watch } from 'vue'
-import axios from 'axios'
+import { api } from 'boot/axios'
 import { useRoute, useRouter } from 'vue-router'
 const aktivnaKategorija = ref(null)
 const isLoading = ref(false)
@@ -177,13 +178,12 @@ const odabranoVozilo = ref(null)
 
 const route = useRoute()
 const router = useRouter()
-const API_URL = 'http://localhost:3000/api/automobili-potrebnapolja'
 const vozila = ref([]) // Kategorije, slike... nam se dohvacaju iz baze, NE lokalno
 
 const dohvatiVozila = async () => {
   isLoading.value = true
   try {
-    const { data } = await axios.get(API_URL)
+    const { data } = await api.get('/api/automobili-potrebnapolja')
     vozila.value = data
   } catch (e) {
     console.error(e)
@@ -208,9 +208,8 @@ watch(
     } else {
       aktivnaKategorija.value = null
     }
-  }
+  },
 )
-
 
 const filtriranaVozila = computed(() => {
   if (!aktivnaKategorija.value) return []
@@ -221,9 +220,10 @@ const otvoriKategoriju = (kategorija) => {
   aktivnaKategorija.value = kategorija
 }
 
-const zatvoriVozila = () => { //Dodan router push
+const zatvoriVozila = () => {
+  //Dodan router push
   aktivnaKategorija.value = null
-  router.push('/pregled-vozila')
+  router.push('/pregled-vozila/')
 }
 
 const prikaziDetalje = (vozilo) => {
@@ -240,15 +240,15 @@ const rezervirajAuto = (voziloId) => {
   prikazModala.value = false
   console.log('ID koji šaljem:', voziloId)
   console.log('odabranoVozilo:', odabranoVozilo.value)
-  router.push({ //Da se ode na str na koju se biraju datumi za rez.
-    name: 'rezerviraj', 
-    params: { id: voziloId }
+  router.push({
+    //Da se ode na str na koju se biraju datumi za rez.
+    name: 'rezerviraj',
+    params: { id: voziloId },
   })
 }
 </script>
 
-<style lang="sass" scoped> 
-.my-card 
-  width: 100%
-  max-width: 353px
+<style lang="sass" scoped>
+.my-card
+  width: 95%
 </style>

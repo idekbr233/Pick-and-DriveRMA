@@ -1,10 +1,10 @@
 <template>
-  <q-page class="overflow-hidden">
+  <q-page>
     <q-toolbar class="bg-secondary text-white">
       <q-btn flat round icon="place" @click="drawerOpen = !drawerOpen" />
-      <q-toolbar-title>Lokacije</q-toolbar-title>
+      <q-toolbar-title style="font-size: 15px;">Lokacije</q-toolbar-title>
       <div class="row items-center">
-        <q-input dense debounce="300" v-model="query" placeholder="Pretraži..." outlined class="q-mr-sm black-input" bg-color="white"/>
+        <q-input dense debounce="300" v-model="query" placeholder="Pretraži..." outlined class="q-mr-sm black-input" bg-color="white" style="width: 7.5rem;"/>
         <q-btn flat round icon="refresh" @click="fetchLocations" />
       </div>
     </q-toolbar>
