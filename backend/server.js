@@ -106,7 +106,7 @@ app.get('/pretraga', (req, res) => {
         res.json(results);
     });
 });
-/////
+//
 app.post('/korisnik', (req, res) => {
   const { ime, prezime, email, korisnicko_ime, lozinka } = req.body;
 
@@ -116,7 +116,7 @@ app.post('/korisnik', (req, res) => {
       return res.status(500).json({ error: 'Greška na serveru' });
     }
 
-    // Izracunava novi ID (ako nema nikoga u bazi, kreni od 1)
+    // Izracunava novi ID
     const noviId = (results[0].maxId || 0) + 1;
 
     // Radi INSERT i salje je novi ID bazi
@@ -128,7 +128,6 @@ app.post('/korisnik', (req, res) => {
         return res.status(500).json({ error: 'Baza odbija upis: ' + insertErr.sqlMessage });
       }
 
-      // Javlja uspjeh
       res.status(200).json({ 
         message: 'Korisnik uspješno dodan!', 
         id: noviId 
@@ -160,7 +159,7 @@ app.post('/api/prijava', (req, res) => {
   });
 });
 
-// Dohvat svih korisnika iz baze -- Admin?
+// Dohvat svih korisnika iz baze
 app.get('/api/korisnici', (req, res) => {
   const sql = 'SELECT id, ime, prezime, korisnicko_ime, email FROM korisnici';
   db.query(sql, (err, results) => {
@@ -172,6 +171,7 @@ app.get('/api/korisnici', (req, res) => {
   });
 });
 
+// Drugaciji get za postavke korisnika
 app.get('/api/user', (req, res) => {
   const userId = parseInt(req.headers['x-user-id']);
 
@@ -257,7 +257,7 @@ app.put('/api/user', (req, res) => {
 
 
 app.get('/api/rezervacije/moje', (req, res) => {
-  const userIdHeader = req.headers['x-user-id'];  // case-insensitive
+  const userIdHeader = req.headers['x-user-id']; 
 
   if (!userIdHeader) {
     return res.status(401).json({ error: 'Nedostaje X-User-ID header.' });
